@@ -30,3 +30,9 @@ npx sequelize-cli db:migrate
 superadmin@example.com
 some-big-password
 ```
+
+
+#### Fill database
+```
+If you don't want to wait for the cron job to run, you can trigger the data export by making a GET request to http://localhost:5000/api/rss endpoint in the database.
+```
