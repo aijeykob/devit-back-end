@@ -17,3 +17,14 @@ services:
       POSTGRES_PASSWORD: pass
       POSTGRES_DB: db
       DATABASE_URL: postgres://user:pass@postgres:5432/db
+
+
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - postgres

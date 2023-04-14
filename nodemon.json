@@ -1,6 +1,5 @@
 {
   "verbose": true,
   "restartable": "rs",
-  "ignore": [".git", "node_modules/**/node_modules", "logs/"],
-  "delay": "1000"
+  "ignore": [".git", "node_modules/**", "logs/"]
 }
