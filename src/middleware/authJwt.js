@@ -1,34 +1,35 @@
-const jwt = require("jsonwebtoken");
-const config = require("../config/auth.config.js");
+const jwt = require('jsonwebtoken');
+const config = require('../config/auth.config.js');
 
-const {TokenExpiredError} = jwt;
-
+const { TokenExpiredError } = jwt;
 
 const verifyToken = (req, res, next) => {
-    let token = req.headers["x-access-token"];
+  let token = req.headers['x-access-token'];
 
-    if (!token) {
-        return res.status(403).send({message: "No token provided!"});
+  if (!token) {
+    return res.status(403).send({ message: 'No token provided!' });
+  }
+
+  jwt.verify(token, config.secret, (err, decoded) => {
+    if (err) {
+      return catchError(err, res);
     }
-
-    jwt.verify(token, config.secret, (err, decoded) => {
-        if (err) {
-            return catchError(err, res);
-        }
-        req.userId = decoded.id;
-        next();
-    });
+    req.userId = decoded.id;
+    next();
+  });
 };
 
 const catchError = (err, res) => {
-    if (err instanceof TokenExpiredError) {
-        return res.status(401).send({message: "Unauthorized! Access Token was expired!"});
-    }
+  if (err instanceof TokenExpiredError) {
+    return res
+      .status(401)
+      .send({ message: 'Unauthorized! Access Token was expired!' });
+  }
 
-    return res.sendStatus(401).send({message: "Unauthorized!"});
-}
+  return res.sendStatus(401).send({ message: 'Unauthorized!' });
+};
 
 const authJwt = {
-    verifyToken: verifyToken,
+  verifyToken: verifyToken,
 };
 module.exports = authJwt;
