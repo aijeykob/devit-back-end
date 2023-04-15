@@ -1,4 +1,5 @@
 const cron = require('node-cron');
+const validator = require('validator');
 
 const { RSS_URL } = require('./constants');
 const app = require('./app');
@@ -14,10 +15,14 @@ app.listen(PORT, () => {
 });
 
 const rssUrls = [RSS_URL];
-const interval = '*/30 * * * *'; // Run every 30 minutes
+const interval = process.env.INTERVAL || '*/30 * * * *'; // Run every 30 minutes
 
 for (const rssUrl of rssUrls) {
-  cron.schedule(interval, () => {
-    savePostsFromRssPeriodically(rssUrl);
-  });
+  if (validator.isURL(rssUrl)) {
+    cron.schedule(interval, () => {
+      savePostsFromRssPeriodically(rssUrl);
+    });
+  } else {
+    console.error(`Invalid RSS URL: ${rssUrl}`);
+  }
 }

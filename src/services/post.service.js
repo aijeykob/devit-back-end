@@ -1,7 +1,6 @@
 const db = require('../models');
 const { fn, col } = require('sequelize');
 const Post = db.posts;
-const { Op } = db.Sequelize;
 
 async function create(postData) {
   const post = {
@@ -37,17 +36,17 @@ async function findAllCreators() {
 }
 
 async function findById(id) {
-  return await Post.findByPk(id);
+  return Post.findByPk(id);
 }
 
 async function update(id, postData) {
-  return await Post.update(postData, {
+  return Post.update(postData, {
     where: { id: id },
   });
 }
 
 async function deleteById(id) {
-  return await Post.destroy({
+  return Post.destroy({
     where: { id: id },
   });
 }
